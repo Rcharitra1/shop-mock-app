@@ -2,14 +2,26 @@ import React from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import CustomButton from '../../components/ui/CustomButton'
 
-import {useSelector} from 'react-redux'
+import {useSelector, useDispatch} from 'react-redux'
 import CartItem from '../../components/shop/CartItem'
+import * as cartActions from '../../store/actions/cart';
+import * as orderActions from '../../store/actions/order';
 
 const CartScreen = props =>{
 
     const {items, totalAmount} = useSelector(state=> state.cart);
 
     const transformedCartItem = [];
+
+    const dispatch = useDispatch();
+    const onRemove = (id)=>{
+        console.log(id)
+        dispatch(cartActions.removeFromCart(id))
+    }
+
+    const onOrder = (itemsInCart, totalAmount)=>{
+        dispatch(orderActions.addOrder(itemsInCart, totalAmount));
+    }
 
     for(const key in items)
     {
@@ -24,9 +36,11 @@ const CartScreen = props =>{
         })
     }
 
+    transformedCartItem.sort((a, b)=> a.productId>b.productId?1:-1)
+
     const renderCartItem = itemData =>{
         return(
-            <CartItem title={itemData.item.productTitle} quantity={itemData.item.quantity} price={parseFloat(itemData.item.productPrice)* parseFloat(itemData.item.quantity)}/>
+            <CartItem title={itemData.item.productTitle} quantity={itemData.item.quantity} price={parseFloat(itemData.item.productPrice)* parseFloat(itemData.item.quantity)} onRemove={()=>onRemove(itemData.item.productId)}/>
         );
     }
     let shopScreen = <Text></Text>
@@ -43,7 +57,7 @@ const CartScreen = props =>{
     <View style={styles.summary}>
     <Text style={styles.default}>Total: <Text style={{color:'#888'}}>${totalAmount.toFixed(2)}</Text></Text>
     <View style={styles.buttonStyle}>
-      <CustomButton onPress={()=>{}}>Order Now</CustomButton>
+      <CustomButton onPress={()=>{onOrder(transformedCartItem, totalAmount)}}>Order Now</CustomButton>
     </View>
     </View>
     

@@ -5,14 +5,19 @@ import {createStore, combineReducers} from 'redux'
 import {Provider} from 'react-redux';
 import productReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart'
+import orderReducer from './store/reducers/order';
 import * as Font from 'expo-font'
 import AppLoading from 'expo-app-loading';
 import {composeWithDevTools} from 'redux-devtools-extension';
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs();
 
 import ShopNavigator from './navigation/ShopNavigation'
 const rootReducer = combineReducers({
   products : productReducer,
-  cart:cartReducer
+  cart:cartReducer,
+  orders: orderReducer
 })
 
 const store = createStore(rootReducer, composeWithDevTools());

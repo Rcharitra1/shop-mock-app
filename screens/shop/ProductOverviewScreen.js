@@ -36,6 +36,11 @@ ProductsOverviewScreen.navigationOptions = navData=>{
         <Item title='cart' iconName={Platform.OS==='android'? 'md-cart': 'ios-cart'} onPress={()=>{
             navData.navigation.navigate({routeName: 'Cart'})
         }}/>
+        </HeaderButtons>,
+        headerLeft:()=><HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item title='menu' iconName={Platform.OS==='android'?'md-menu':'ios-menu'} onPress={()=>{
+            navData.navigation.toggleDrawer();
+        }}/>
         </HeaderButtons>
     }
 }
