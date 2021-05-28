@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, Image, Button, ScrollView} from 'react-native';
 import {useSelector, useDispatch} from 'react-redux';
+import CustomButton from '../../components/ui/CustomButton';
 import Colors from '../../constants/Colors'
 import * as cartActions from '../../store/actions/cart'
 
@@ -16,9 +17,9 @@ const ProductDetailScreen = props =>{
         <View style={styles.screen}>
         <Image source={{uri:selectedProduct.imageUrl}} style={styles.image}/>
         <View style={styles.buttonContainer}>
-        <Button color={Colors.primary} title='Add To Cart' onPress={()=>{
+        <CustomButton onPress={()=>{
             dispatch(cartActions.addToCart(selectedProduct))
-        }}/>
+        }}>Add To Cart</CustomButton>
         </View>
         
         <Text style={styles.price}>${selectedProduct.price.toFixed(2)}</Text>
@@ -65,7 +66,6 @@ const styles = StyleSheet.create({
     },
 
     buttonContainer:{
-        width: '40%',
         marginTop:15
     }
 })

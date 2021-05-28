@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, Button, TouchableOpacity, TouchableNativeFeedback, Platform } from 'react-native';
 import Colors from '../../constants/Colors';
+import CustomButton from '../ui/CustomButton';
 
 const ProductItem = props =>{
 
@@ -21,8 +22,9 @@ const ProductItem = props =>{
       <Text style={styles.title}>{props.title}</Text>
       <Text style={styles.price}>{props.price}</Text>
       <View style={styles.buttonContainer}>
-        <Button color={Colors.primary} title='View Details' onPress={props.onViewDetail}/>
-        <Button color={Colors.accent} title='To Cart' onPress={props.onAddToCart}/>
+        <CustomButton onPress={props.onViewDetail} style={styles.button}>View Details</CustomButton>
+
+        <CustomButton onPress={props.onAddToCart} style={{backgroundColor:Colors.accent, ...styles.button}}>To Cart</CustomButton>
       </View>
       </View> 
         </TouchView>
@@ -55,13 +57,18 @@ const styles = StyleSheet.create({
     buttonContainer:{
         flexDirection:'row',
         width: '100%',
-        justifyContent:'space-between',
         alignItems:'center',
-        paddingHorizontal:10
+        justifyContent:'space-between',
+        paddingHorizontal:10,
+        height: '15%'
+    },
+
+    button:{
+        width: 150
     },
     imageContainer:{
         width: '100%',
-        height: '70%',
+        height: '65%',
         borderTopLeftRadius:6,
         borderTopRightRadius:6,
         overflow: 'hidden'
@@ -86,3 +93,5 @@ const styles = StyleSheet.create({
 })
 
 export default ProductItem
+
+      // <Button color={Colors.primary} title='View Details' onPress={props.onViewDetail}/>
