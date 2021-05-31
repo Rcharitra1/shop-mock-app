@@ -11,7 +11,7 @@ const ProductsOverviewScreen = props =>{
     const dispatch = useDispatch();
  
     const renderItemData = itemData =>{
-        return <ProductItem imageUrl = {itemData.item.imageUrl} title={itemData.item.title} price={itemData.item.price} onViewDetail={()=>{
+        return <ProductItem imageUrl = {itemData.item.imageUrl} title={itemData.item.title} price={itemData.item.price} onSelect={()=>{
             props.navigation.navigate({
                routeName:'ProductDetail',
                params:{
@@ -19,9 +19,13 @@ const ProductsOverviewScreen = props =>{
                    'productTitle':itemData.item.title
                } 
             })
-        }} onAddToCart={()=>{
+        }} onSecondButtonPress={()=>{
             dispatch(cartActions.addToCart(itemData.item))
-        }}/>
+        }}
+
+        firstButtonTitle={'View Details'}
+        secondButtonTitle={'Add To Cart'}
+        />
     }
     return(
         <FlatList data={products} keyExtractor={ (item)=> item.id} renderItem={renderItemData}

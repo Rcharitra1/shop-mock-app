@@ -40,7 +40,7 @@ const CartScreen = props =>{
 
     const renderCartItem = itemData =>{
         return(
-            <CartItem title={itemData.item.productTitle} quantity={itemData.item.quantity} price={parseFloat(itemData.item.productPrice)* parseFloat(itemData.item.quantity)} onRemove={()=>onRemove(itemData.item.productId)}/>
+            <CartItem title={itemData.item.productTitle} quantity={itemData.item.quantity} price={parseFloat(itemData.item.productPrice)* parseFloat(itemData.item.quantity)} onRemove={()=>onRemove(itemData.item.productId)} deletable={true}/>
         );
     }
     let shopScreen = <Text></Text>

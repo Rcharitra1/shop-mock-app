@@ -12,19 +12,23 @@ const ProductItem = props =>{
         TouchView = TouchableNativeFeedback
     }
     return (
-        <View style={styles.box}>
-        <TouchView activeOpacity={0.5} onPress={props.onViewDetail} useForeground>
+        <View style={{...styles.box, ...props.style}}>
+        <TouchView activeOpacity={0.5} onPress={props.onSelect} useForeground disabled={props.touchable}>
         <View style={styles.touchable}>
       <View style={styles.imageContainer}>
       <Image style={{...styles.image}} source={{uri:props.imageUrl}}  />
       </View>
       
       <Text style={styles.title}>{props.title}</Text>
-      <Text style={styles.price}>{props.price}</Text>
+      <Text style={styles.price}>${props.price}</Text>
       <View style={styles.buttonContainer}>
-        <CustomButton onPress={props.onViewDetail} style={styles.button}>View Details</CustomButton>
+   
+            <CustomButton onPress={props.onSelect} style={styles.button}>{props.firstButtonTitle}</CustomButton>
+    
+            <CustomButton onPress={props.onSecondButtonPress} style={{backgroundColor:Colors.accent, ...styles.button}}>{props.secondButtonTitle}</CustomButton>
+        
 
-        <CustomButton onPress={props.onAddToCart} style={{backgroundColor:Colors.accent, ...styles.button}}>To Cart</CustomButton>
+       
       </View>
       </View> 
         </TouchView>
@@ -33,6 +37,7 @@ const ProductItem = props =>{
        
     );
 }
+
 
 const styles = StyleSheet.create({
     box:{

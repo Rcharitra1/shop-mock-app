@@ -1,22 +1,26 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { View, StyleSheet, Text } from 'react-native';
 import CustomButton from '../ui/CustomButton';
 import CartItem from '../shop/CartItem'
 
 const OrderItem = props =>{
+    const [showDetails, setShowDetails] =useState(false);
     return(<View style={styles.box}>
         <View style={styles.summary}>
 
-        <Text style={styles.totalAmount}>${props.totalAmount}</Text>
+        <Text style={styles.totalAmount}>${props.totalAmount.toFixed(2)}</Text>
         <Text style={styles.date}>{props.date}</Text>            
         </View>
-        <CustomButton onPress={()=>{}}>Show Details</CustomButton>
+        <CustomButton style={{marginBottom:10}} onPress={()=>{setShowDetails(!showDetails)}}>{showDetails?'Hide Details':'Show Details'}</CustomButton>
+        {showDetails && <View style={styles.showDetail}>
+            {props.items.map((item, index)=> <CartItem style={{shadowColor:'white', elevation:0}} key={index} title={item.productTitle} price={item.productPrice} quantity={item.quantity}/>
+            )}
+            </View>}
         </View>);
 }
 
 const styles = StyleSheet.create({
     box:{
-        height: 100,
         shadowColor:'black',
         shadowOffset:{
             height:2,
@@ -49,6 +53,9 @@ const styles = StyleSheet.create({
         fontFamily:'open-sans',
         fontSize:16,
         color:'#888'
+    },
+    showDetail:{
+        width: '100%',
     }
 
 })
