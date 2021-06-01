@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {useSelector, useDispatch} from 'react-redux'
-import { FlatList, View, Text, Platform, Alert, StyleSheet} from 'react-native';
+import { FlatList, View, Text, Platform, Alert, StyleSheet, ActivityIndicator} from 'react-native';
 import ProductItem from '../../components/shop/ProductItem'
 import HeaderButton from '../../components/ui/HeaderButton';
 import { HeaderButtons, Item } from 'react-navigation-header-buttons';
@@ -8,9 +8,37 @@ import * as productActions from '../../store/actions/products'
 const UserProductScreen = props =>{
 
     const dispatch = useDispatch();
-     
-    const {userProducts} = useSelector(state => state.products);
+    const [isLoading, setIsLoading]= useState(false)
+    const {userProducts}= useSelector(state=> state.products);
+    const loadData=useCallback(async()=>{
+        setIsLoading(true)
+        try{
+            await dispatch(productActions.fetchProducts)
+        }catch(e)
+        {
+            console.log(e.message)
+        }
 
+        setIsLoading(false)
+       
+        console.log('this is finished')
+    },[setIsLoading])
+
+    useEffect(() => {
+        loadData()
+        
+    }, [dispatch, loadData])
+
+    useEffect(() => {
+        const willFocus = props.navigation.addListener('willFocus', ()=>{
+            loadData()
+        })
+        return()=>{
+           willFocus.remove()
+        }
+    }, [loadData])
+
+   
     const deleteAlert = (id)=>{
         Alert.alert('Are you sure?', 'Do you want to delete this item?', [
             {text:'No', style:'default'},
@@ -35,7 +63,15 @@ const UserProductScreen = props =>{
     let renderScreen = <View style={styles.noItem}><Text style={styles.noItemText}>No item created by user</Text></View>
 
 
-    if(userProducts.length>0)
+    if(isLoading)
+    {
+        return(
+            <View>
+            <ActivityIndicator size='large' />
+            </View>
+        );
+    }
+    if(userProducts.length>0 && !isLoading)
     {
         renderScreen = <FlatList data={userProducts} keyExtractor={item=> item.id}
         renderItem={renderItemData} />
@@ -57,7 +93,8 @@ UserProductScreen.navigationOptions = navData =>{
             navData.navigation.navigate({
                 routeName:'EditProduct',
                 params:{
-                    headerTitle : 'Add Product'
+                    headerTitle : 'Add Product',
+                    productId:null
                 }
             })
         }}/>

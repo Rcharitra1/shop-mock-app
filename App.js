@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import {createStore, combineReducers} from 'redux'
+import {createStore, combineReducers, applyMiddleware} from 'redux'
+import ReduxThunk from 'redux-thunk';
 import {Provider} from 'react-redux';
 import productReducer from './store/reducers/products';
 import cartReducer from './store/reducers/cart'
@@ -10,6 +11,7 @@ import * as Font from 'expo-font'
 import AppLoading from 'expo-app-loading';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import { LogBox } from 'react-native';
+
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
 
@@ -20,7 +22,7 @@ const rootReducer = combineReducers({
   orders: orderReducer
 })
 
-const store = createStore(rootReducer, composeWithDevTools());
+const store = createStore(rootReducer, composeWithDevTools(), applyMiddleware(ReduxThunk));
 const fetchFonts = ()=>{
   return Font.loadAsync({
     'open-sans':require('./assets/fonts/OpenSans-Regular.ttf'),
