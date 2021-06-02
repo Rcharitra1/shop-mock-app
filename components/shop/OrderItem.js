@@ -13,7 +13,7 @@ const OrderItem = props =>{
         </View>
         <CustomButton style={{marginBottom:10}} onPress={()=>{setShowDetails(!showDetails)}}>{showDetails?'Hide Details':'Show Details'}</CustomButton>
         {showDetails && <View style={styles.showDetail}>
-            {props.items.map((item, index)=> <CartItem style={{shadowColor:'white', elevation:0}} key={index} title={item.productTitle} price={item.productPrice} quantity={item.quantity}/>
+            {props.items.map((item)=> <CartItem style={{shadowColor:'white', elevation:0}} key={item.productId} title={item.productTitle} price={item.productPrice} quantity={item.quantity}/>
             )}
             </View>}
         </View>);

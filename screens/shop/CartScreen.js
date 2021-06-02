@@ -1,17 +1,22 @@
-import React from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
+import React, {useState} from 'react';
+import { View, Text, FlatList, StyleSheet, ActivityIndicator } from 'react-native';
 import CustomButton from '../../components/ui/CustomButton'
 
 import {useSelector, useDispatch} from 'react-redux'
 import CartItem from '../../components/shop/CartItem'
 import * as cartActions from '../../store/actions/cart';
 import * as orderActions from '../../store/actions/order';
+import Colors  from '../../constants/Colors';
 
 const CartScreen = props =>{
 
     const {items, totalAmount} = useSelector(state=> state.cart);
 
+    const [isLoading, setIsLoading]=useState(false);
+
     const transformedCartItem = [];
+
+    
 
     const dispatch = useDispatch();
     const onRemove = (id)=>{
@@ -19,8 +24,13 @@ const CartScreen = props =>{
         dispatch(cartActions.removeFromCart(id))
     }
 
-    const onOrder = (itemsInCart, totalAmount)=>{
-        dispatch(orderActions.addOrder(itemsInCart, totalAmount));
+
+
+    const onOrder = async (itemsInCart, totalAmount)=>{
+        setIsLoading(true)
+            await dispatch(orderActions.addOrder(itemsInCart, totalAmount));
+        setIsLoading(false);
+        
     }
 
     for(const key in items)
@@ -56,9 +66,10 @@ const CartScreen = props =>{
             <View>
     <View style={styles.summary}>
     <Text style={styles.default}>Total: <Text style={{color:'#888'}}>${totalAmount.toFixed(2)}</Text></Text>
-    <View style={styles.buttonStyle}>
-      <CustomButton onPress={()=>{onOrder(transformedCartItem, totalAmount)}}>Order Now</CustomButton>
-    </View>
+    {isLoading ? <ActivityIndicator size='small' color={Colors.primary}/> : <View style={styles.buttonStyle}>
+    <CustomButton onPress={()=>{onOrder(transformedCartItem, totalAmount)}}>Order Now</CustomButton>
+    </View> }
+    
     </View>
     
 
