@@ -152,7 +152,7 @@ const AuthScreen = props =>{
 
 AuthScreen.navigationOptions=navData=>{
     return{
-        headerTitle:'Auth'
+        headerTitle:"Shop N' Sell"
     };
 }
 const styles = StyleSheet.create({

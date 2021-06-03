@@ -2,13 +2,40 @@ import {AsyncStorage} from 'react-native'
 export const SIGNUP='SIGNUP';
 export const LOGIN='LOGIN';
 export const AUTO_LOGIN='AUTO_LOGIN';
+export const LOGOUT='LOGOUT';
 
-export const autoLogin = (userId, token)=>{
-    return {
-        type:AUTO_LOGIN,
-        userId:userId,
-        token:token
+let timer;
+const clearLogoutTimer = ()=>{
+    if(timer)
+    {
+        clearTimeout(timer);
     }
+
+}
+
+export const autoLogin = (userId, token, expirationTime)=>{
+    return async dispatch=>{
+        dispatch(setLogoutTimer(expirationTime))
+        dispatch({type:AUTO_LOGIN,
+            userId:userId,
+            token:token})
+    }
+}
+
+
+
+const setLogoutTimer = (expirationTime)=>{
+    return dispatch=>{
+        timer = setTimeout(()=>{
+            dispatch(logout);
+        }, expirationTime)
+    }
+    
+}
+
+export const logout = ()=>{
+    clearLogoutTimer();
+    return {type: LOGOUT}
 }
 
 
@@ -32,10 +59,12 @@ export const signUp = (email, password)=>{
         }
 
         const resData = await response.json();
-        console.log(resData)
+        dispatch(setLogoutTimer(parseInt(resData.expiresIn)*1000))
+
         dispatch({type: SIGNUP, token: resData.idToken, userId:resData.localId});
         const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn)*1000)
         saveDataToStorage(resData.idToken, resData.localId, expirationDate);
+       
     }
 };
 
@@ -69,6 +98,7 @@ export const login = (email, password)=>{
             throw new Error(message)
         }
         const resData = await response.json();
+        dispatch(setLogoutTimer(parseInt(resData.expiresIn)*1000))
         dispatch({type:LOGIN, token: resData.idToken, userId:resData.localId })
         const expirationDate = new Date(new Date().getTime() + parseInt(resData.expiresIn)*1000)
         saveDataToStorage(resData.idToken, resData.localId, expirationDate);

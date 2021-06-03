@@ -1,4 +1,5 @@
-import { AUTO_LOGIN, LOGIN, SIGNUP } from "../actions/auth";
+import { AUTO_LOGIN, LOGIN, LOGOUT, SIGNUP } from "../actions/auth";
+import {AsyncStorage} from 'react-native';
 
 const initialState={
     token:null,
@@ -26,6 +27,14 @@ export default(state=initialState, action)=>{
                 ...state,
                 token:action.token,
                 userId:action.userId
+            }
+
+        case LOGOUT:
+            AsyncStorage.removeItem('userData');
+            return{
+                ...state,
+                token:null,
+                userId:null
             }
     }
     return state;

@@ -12,6 +12,7 @@ import AppLoading from 'expo-app-loading';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import { LogBox } from 'react-native';
 import authReducer from './store/reducers/auth'
+import NavigationContainer from './navigation/NavigationContainer';
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -42,7 +43,7 @@ if(!fontLoaded)
 
   return (
     <Provider store={store}>
-    <ShopNavigator/>
+    <NavigationContainer />
     </Provider>
     
   );
