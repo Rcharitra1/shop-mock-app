@@ -41,6 +41,11 @@ const OrdersScreen = (props)=>{
         return <View><ActivityIndicator size='large' color={Colors.primary}/></View>
     }
 
+    if(!isLoading && orders.length===0)
+    {
+        return <View style={styles.centered}><Text style={styles.noText}>No orders had been placed</Text></View>
+    }
+
     
 
     return(
@@ -53,7 +58,13 @@ const styles = StyleSheet.create({
     centered:{
         flex: 1,
         alignItems:'center',
-        justifyContent:'center'
+        marginVertical:10
+    },
+    noText:{
+        fontFamily:'open-sans',
+        fontSize:18,
+
+        
     }
 });
 

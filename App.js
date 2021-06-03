@@ -11,6 +11,7 @@ import * as Font from 'expo-font'
 import AppLoading from 'expo-app-loading';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import { LogBox } from 'react-native';
+import authReducer from './store/reducers/auth'
 
 LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 LogBox.ignoreAllLogs();
@@ -19,7 +20,8 @@ import ShopNavigator from './navigation/ShopNavigation'
 const rootReducer = combineReducers({
   products : productReducer,
   cart:cartReducer,
-  orders: orderReducer
+  orders: orderReducer,
+  auth: authReducer
 })
 
 const store = createStore(rootReducer, composeWithDevTools(), applyMiddleware(ReduxThunk));

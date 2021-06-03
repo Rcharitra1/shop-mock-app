@@ -2,9 +2,10 @@ export const ADD_ORDER = 'ADD_ORDER';
 export const SET_ORDERS='SET_ORDERS';
 import Order from '../../models/order'
 export const fetchOrders=()=>{
-    return async dispatch=>{
+    return async (dispatch, getState)=>{
         let resArray = [];
-        const response = await fetch('https://rn-shopping-app-r-default-rtdb.firebaseio.com/orders/u1.json');
+        const {userId}=getState().auth;
+        const response = await fetch(`https://rn-shopping-app-r-default-rtdb.firebaseio.com/orders/${userId}.json`);
         
         if(!response.ok)
         {
@@ -26,9 +27,10 @@ export const fetchOrders=()=>{
 }
 export const addOrder =(itemsInCart, totalAmount)=>
 {
-    return async dispatch =>{
+    return async (dispatch, getState) =>{
+        const {userId, token} = getState().auth;
         const date = new Date();
-        const response = await fetch('https://rn-shopping-app-r-default-rtdb.firebaseio.com/orders/u1.json', {
+        const response = await fetch(`https://rn-shopping-app-r-default-rtdb.firebaseio.com/orders/${userId}.json?auth=${token}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

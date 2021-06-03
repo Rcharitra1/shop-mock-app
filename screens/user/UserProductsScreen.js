@@ -20,8 +20,6 @@ const UserProductScreen = props =>{
         }
 
         setIsLoading(false)
-       
-        console.log('this is finished')
     },[setIsLoading])
 
     useEffect(() => {
